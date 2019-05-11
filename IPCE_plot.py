@@ -35,7 +35,7 @@ def integrate(x, y):
         ans.append(ans[i-1] + (y[i]+y[i-1])*(x[i]-x[i-1])/2)
     return ans
 
-def plot(x, y1, jsc):  # plot为用以画图的函数
+def plot(x, y1, jsc, file):  # plot为用以画图的函数
     fig = plt.figure()  # 创建一个对象fig
     ax1 = fig.add_subplot(111)  # 创建一个1行*1列的画布，将子图画在从左至右的第1块
     ax1.plot(x, y1) # 首先绘制IPCE曲线
@@ -53,10 +53,12 @@ def plot(x, y1, jsc):  # plot为用以画图的函数
     ax2.plot(x, y2, 'r')
     ax2.set_ylabel("Integrate Current(mA/cm2)")
     ax2.set_ylim(0, 25)
-
+    plt.savefig(folder + "\\" + file[:-4] + ".png")
     plt.show()
 
+#主程序开始
+print("欢迎使用IPCE自动画图器---版本：1.1---Coder：Nick")
 folder, files_list = get_files_list()
 for i in files_list:
     x, y, jsc = read_data(folder, i)
-    plot(x, y, jsc)
+    plot(x, y, jsc, i)
