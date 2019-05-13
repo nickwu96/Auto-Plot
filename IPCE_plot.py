@@ -1,16 +1,16 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*- 
+# _*_ coding:utf-8 _*_
 # Author: Nick
 
 import matplotlib.pyplot as plt
-import numpy as np
 import os
-import scipy.integrate
-
 
 def get_files_list():  # get_files_list()是用来获取指定文件夹内所有文件的函数
     folder = input(r"请输入存放IPCE数据的文件夹（所有生成的图像文件将自动保存到该文件夹）：")
     files_list = os.listdir(folder)  # 遍历指定文件夹内的所有文件，并存储到files_list列表中
+    for i in files_list:
+        if i[-4:] != ".txt":
+            files_list.remove(i)
     print("共找到{}个文件：".format(len(files_list)))
     return folder, files_list
 
@@ -39,10 +39,11 @@ def plot(x, y1, jsc, file):  # plot为用以画图的函数
     fig = plt.figure()  # 创建一个对象fig
     ax1 = fig.add_subplot(111)  # 创建一个1行*1列的画布，将子图画在从左至右的第1块
     ax1.plot(x, y1) # 首先绘制IPCE曲线
-    ax1.set_ylabel("IPCE(%)")
-    ax1.set_xlabel("Wavelength(nm)")
+    ax1.set_ylabel("IPCE (%)")
+    ax1.set_xlabel("Wavelength (nm)")
     ax1.set_xlim(300, 850)
     ax1.set_ylim(0, 90)
+    ax1.set_title("{}    $Jsc$={} mA/$\\rm cm^2$".format(file, str(jsc)))  # 为图片添加标题（$$内为latex格式的公式）
 
     # 接下来绘制积分电流曲线
     integrate_y = integrate(x, y1)  #算出积分后的y值
@@ -51,13 +52,13 @@ def plot(x, y1, jsc, file):  # plot为用以画图的函数
         y2.append(i/integrate_y[-1]*jsc)  #将y值标准化，使得最后一个值等于jsc
     ax2 = ax1.twinx()  # 创建双y轴图
     ax2.plot(x, y2, 'r')
-    ax2.set_ylabel("Integrate Current(mA/cm2)")
+    ax2.set_ylabel("Integrate Current (mA/$\\rm cm^2$)")
     ax2.set_ylim(0, 25)
-    plt.savefig(folder + "\\" + file[:-4] + ".png")
+    plt.savefig(folder + "\\" + file[:-4] + ".png", dpi = 600)
     plt.show()
 
 #主程序开始
-print("欢迎使用IPCE自动画图器---版本：1.1---Coder：Nick")
+print("欢迎使用IPCE自动画图器---版本：1.2---Coder：Nick")
 folder, files_list = get_files_list()
 for i in files_list:
     x, y, jsc = read_data(folder, i)
