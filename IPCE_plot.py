@@ -5,17 +5,18 @@
 import matplotlib.pyplot as plt
 import os
 
+folder = '' # folder为数据存放的文件夹
+
 def get_files_list():  # get_files_list()是用来获取指定文件夹内所有文件的函数
-    folder = input(r"请输入存放IPCE数据的文件夹（所有生成的图像文件将自动保存到该文件夹）：")
     files_list = os.listdir(folder)  # 遍历指定文件夹内的所有文件，并存储到files_list列表中
     for i in files_list:
         if i[-4:] != ".txt":
             files_list.remove(i)
     print("共找到{}个文件：".format(len(files_list)))
-    return folder, files_list
+    return files_list
 
 
-def read_data(folder, file_name):  # read_data函数用于读取文件内的数据
+def read_data(file_name):  # read_data函数用于读取文件内的数据
     print("现在处理文件：{}".format(file_name))
     file = open(folder + "\\" + file_name, 'r')
     data = file.readlines()  # data以行的形式读取IPCE文件中的数据
@@ -58,8 +59,10 @@ def plot(x, y1, jsc, file):  # plot为用以画图的函数
     plt.show()
 
 #主程序开始
-print("欢迎使用IPCE自动画图器---版本：1.2---Coder：Nick")
-folder, files_list = get_files_list()
-for i in files_list:
-    x, y, jsc = read_data(folder, i)
-    plot(x, y, jsc, i)
+if __name__ == '__main__':
+    print("欢迎使用IPCE自动画图器---版本：1.2---Coder：Nick")
+    folder = input(r"请输入存放IPCE数据的文件夹（所有生成的图像文件将自动保存到该文件夹）：")
+    ipce_list = get_files_list()
+    for i in ipce_list:
+        x, y, jsc = read_data(i)
+        plot(x, y, jsc, i)
