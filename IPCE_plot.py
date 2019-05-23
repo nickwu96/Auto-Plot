@@ -9,11 +9,12 @@ folder = '' # folder为数据存放的文件夹
 
 def get_files_list():  # get_files_list()是用来获取指定文件夹内所有文件的函数
     files_list = os.listdir(folder)  # 遍历指定文件夹内的所有文件，并存储到files_list列表中
+    ipce_list = []
     for i in files_list:
-        if i[-4:] != ".txt":
-            files_list.remove(i)
-    print("共找到{}个文件：".format(len(files_list)))
-    return files_list
+        if i[-4:] == ".txt":
+            ipce_list.append(i)
+    print("共找到{}个文件：".format(len(ipce_list)))
+    return ipce_list
 
 
 def read_data(file_name):  # read_data函数用于读取文件内的数据
