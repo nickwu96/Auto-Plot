@@ -19,7 +19,7 @@ def get_files_list():  # get_files_list()是用来获取指定文件夹内所有
 
 def read_data(file_name):  # read_data函数用于读取文件内的数据
     print("现在处理文件：{}".format(file_name))
-    file = open(folder + "\\" + file_name, 'r')
+    file = open(file_name, 'r')
     data = file.readlines()  # data以行的形式读取IPCE文件中的数据
     file.close()
     x, y = [], []
@@ -56,7 +56,7 @@ def plot(x, y1, jsc, file):  # plot为用以画图的函数
     ax2.plot(x, y2, 'r')
     ax2.set_ylabel("Integrate Current (mA/$\\rm cm^2$)")
     ax2.set_ylim(0, 25)
-    plt.savefig(folder + "\\" + file[:-4] + ".png", dpi = 600)
+    plt.savefig(file[:-4] + ".png", dpi = 600)
     plt.show()
 
 #主程序开始
@@ -65,5 +65,5 @@ if __name__ == '__main__':
     folder = input(r"请输入存放IPCE数据的文件夹（所有生成的图像文件将自动保存到该文件夹）：")
     ipce_list = get_files_list()
     for i in ipce_list:
-        x, y, jsc = read_data(i)
-        plot(x, y, jsc, i)
+        x, y, jsc = read_data(folder + "\\" + i)
+        plot(x, y, jsc, folder + "\\" + i)
